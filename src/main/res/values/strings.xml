@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">GSAMaps</string>
+    <string name="title_activity_main">GSAMaps</string>
+    <string name="title_activity_list">Embaixadores</string>
+    <string name="title_activity_ambassador">Embaixador</string>
+    <string name="title_activity_about">Sobre</string>
+
+    <string name="action_ambassadors_list">Embaixadores</string>
+    <string name="action_about">Sobre</string>
+
+</resources>
