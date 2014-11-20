@@ -2,41 +2,44 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:padding="16dp">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:orientation="vertical"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="16dp">
+        android:padding="16dp"
+        android:background="@color/azul">
 
         <TextView
             android:id="@+id/ambassador_textview_nome"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Fulano de Tal"/>
+            android:text="Fulano de Tal"
+            style="@style/h1_white"/>
 
         <TextView
             android:id="@+id/ambassador_textview_instituicao"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Faculdade de Tecnologia Evolução"/>
+            android:text="Faculdade de Tecnologia Evolução"
+            style="@style/description_white"/>
 
     </LinearLayout>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:orientation="horizontal"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical">
+        android:gravity="center_vertical"
+        android:padding="16dp">
 
         <ImageView
             android:id="@+id/list_item_icon_flag"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_launcher"
+            android:src="@drawable/ic_action_place"
             android:paddingRight="16dp"/>
 
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -60,7 +63,8 @@
                 android:id="@+id/ambassador_textview_instituicao_cidade"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Fortaleza - CE"/>
+                android:text="Fortaleza - CE"
+                android:textStyle="bold"/>
 
         </LinearLayout>
 
