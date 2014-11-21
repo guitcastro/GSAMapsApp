@@ -20,6 +20,7 @@ public class DataManager extends Activity {
     public Cursor readAllData(Context context) {
 
         String[] colunas = {
+                AmbassadorEntry._ID,
                 AmbassadorEntry.COLUMN_NAME_NOME,
                 AmbassadorEntry.COLUMN_NAME_INSTITUICAO,
                 AmbassadorEntry.COLUMN_NAME_PAIS,
