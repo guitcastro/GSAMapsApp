@@ -1,16 +1,21 @@
 package com.mariovalney.gsamaps;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.mariovalney.gsamaps.data.DataContract.AmbassadorEntry;
+import com.mariovalney.gsamaps.data.DataManager;
 
 public class MainActivity extends ActionBarActivity {
 
@@ -75,11 +80,32 @@ public class MainActivity extends ActionBarActivity {
         UiSettings mapSettings;
         mapSettings = mMap.getUiSettings();
 
-        mapSettings.setZoomGesturesEnabled(false);
-        mapSettings.setZoomControlsEnabled(false);
-
+        //mapSettings.setZoomGesturesEnabled(false);
+        //mapSettings.setZoomControlsEnabled(false);
         mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
-        mMap.addMarker(new MarkerOptions().position(new LatLng(-3.736571, -38.579658))
-                .title("Minha Casa"));
+
+        // Ler os dados armazenados
+        DataManager dataManager = new DataManager();
+        Cursor cursor = dataManager.readAllLocations(getApplication());
+
+        // Varrendo o Cursor
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            String nome =
+                cursor.getString(cursor.getColumnIndex(AmbassadorEntry.COLUMN_NAME_NOME));
+            float lat =
+                cursor.getFloat(cursor.getColumnIndex(AmbassadorEntry.COLUMN_NAME_LATITUDE));
+            float lng =
+                cursor.getFloat(cursor.getColumnIndex(AmbassadorEntry.COLUMN_NAME_LONGITUDE));
+
+            // Criando o Marker
+            mMap.addMarker(new MarkerOptions().position(new LatLng(lat, lng))
+                    .title(nome).icon(BitmapDescriptorFactory.fromResource(R.drawable.marker)));
+
+            cursor.moveToNext();
+        }
+        cursor.close();
+
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(11.373552, -76.97600300), 2));
     }
 }

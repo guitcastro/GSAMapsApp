@@ -1,23 +1,25 @@
 package com.mariovalney.gsamaps;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import com.mariovalney.gsamaps.data.DataManager;
+import com.mariovalney.gsamaps.data.DataContract.AmbassadorEntry;
 
 /**
  * Created by neo on 18/11/14.
  */
 public class ListFragment extends Fragment {
+
+    private ListAdapter listAdapter;
 
     public ListFragment() {
     }
@@ -26,51 +28,55 @@ public class ListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-
-        // Criando apenas dados fantasma
-        String[] data = {
-                "Fulano de Tal 1",
-                "Fulano de Tal 2",
-                "Fulano de Tal 3",
-                "Fulano de Tal 4",
-                "Fulano de Tal 5",
-                "Fulano de Tal 6",
-                "Fulano de Tal 7",
-                "Fulano de Tal 8",
-                "Fulano de Tal 9",
-                "Fulano de Tal 10",
-                "Fulano de Tal 11",
-                "Fulano de Tal 12",
-                "Fulano de Tal 13",
-                "Fulano de Tal 14"
-        };
-        List<String> listaDeEmbaixadores = new ArrayList<String>(Arrays.asList(data));
-
-        // Criando o adaptador da lista
-        final ArrayAdapter<String> listaDeEmbaixadoresAdapter =
-                new ArrayAdapter<String>(
-                        getActivity(), // The current context (this activity)
-                        R.layout.list_item_ambassadors, // The name of the layout ID.
-                        R.id.list_item_textview_nome, // The ID of the textview to populate.
-                        listaDeEmbaixadores);
-
         View rootView = inflater.inflate(R.layout.list_fragment, container, false);
+        final ListView listView = (ListView) rootView.findViewById(R.id.listview_lista);
 
-        // Seta o adaptador à listview
-        ListView listView = (ListView) rootView.findViewById(R.id.listview_ambassadors);
-        listView.setAdapter(listaDeEmbaixadoresAdapter);
+        // Ler os dados armazenados
+        DataManager dataManager = new DataManager();
+        Cursor cursor = dataManager.readAllData(getActivity());
 
-        // Implementando o Clique no item da listagem de Embaixadores
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        if (cursor != null) {
 
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                String embaixador = listaDeEmbaixadoresAdapter.getItem(position);
-                Intent intent = new Intent(getActivity(), AmbassadorActivity.class)
-                        .putExtra(Intent.EXTRA_TEXT, embaixador);
-                startActivity(intent);
-            }
-        });
+            // tá quebrando aqui
+
+            listAdapter = new ListAdapter(getActivity(), cursor, 0);
+
+            // Seta o adaptador à listview
+            listView.setAdapter(listAdapter);
+
+            // Implementando o Clique no item da listagem de Embaixadores
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                    Cursor cursor = listAdapter.getCursor();
+
+                    if (cursor != null && cursor.moveToPosition(position)) {
+
+                        // Lendo o Cursor
+                        String nome = cursor.getString(
+                                cursor.getColumnIndex(AmbassadorEntry.COLUMN_NAME_NOME));
+                        String instituicao = cursor.getString(
+                                cursor.getColumnIndex(AmbassadorEntry.COLUMN_NAME_INSTITUICAO));
+                        float lat = cursor.getFloat(
+                                cursor.getColumnIndex(AmbassadorEntry.COLUMN_NAME_LATITUDE));
+                        float lng = cursor.getFloat(
+                                cursor.getColumnIndex(AmbassadorEntry.COLUMN_NAME_LONGITUDE));
+
+                        // Preenchendo e enviando o INTENT
+                        Intent intent = new Intent(getActivity(), AmbassadorActivity.class)
+                                .putExtra(AmbassadorActivity.INTENT_NOME, nome)
+                                .putExtra(AmbassadorActivity.INTENT_INSTITUICAO, instituicao)
+                                .putExtra(AmbassadorActivity.INTENT_LAT, lat)
+                                .putExtra(AmbassadorActivity.INTENT_LNG, lng);
+                        startActivity(intent);
+                    }
+                }
+            });
+
+        } else {
+            Log.d("CURSOR in List Fragment", "Cursor is null");
+        }
 
         return rootView;
     }

@@ -57,12 +57,6 @@
                 android:id="@+id/ambassador_textview_instituicao_endereco_linha2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Aldeota de La Bomboniera"/>
-
-            <TextView
-                android:id="@+id/ambassador_textview_instituicao_cidade"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:text="Fortaleza - CE"
                 android:textStyle="bold"/>
 

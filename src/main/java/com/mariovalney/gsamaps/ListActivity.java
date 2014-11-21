@@ -10,6 +10,7 @@ import android.view.MenuItem;
  * Created by neo on 18/11/14.
  */
 public class ListActivity extends ActionBarActivity {
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
